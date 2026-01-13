@@ -5,17 +5,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowDown, Wind } from 'lucide-react';
 import { DetailGrid } from './detail-grid';
 import { AstroGraph } from './astro-graph';
-// REMOVED: Static import to save initial bundle size
-// import { WeatherCanvas } from './weather-canvas';
 import { AtmosphericNoise } from './atmospheric-noise';
 import { DetailedWeather } from '@/lib/weather-utils';
 import dynamic from 'next/dynamic';
 
-// OPTIMIZATION: Dynamic Import with "ssr: false"
-// This moves the heavy WeatherCanvas to a separate chunk that loads later.
 const WeatherCanvas = dynamic(() => import('./weather-canvas').then(mod => mod.WeatherCanvas), {
   ssr: false,
-  loading: () => <div className="absolute inset-0 bg-transparent" /> // Invisible placeholder while loading
+  loading: () => <div className="absolute inset-0 bg-transparent" /> 
 });
 
 export const TimeTravelLayout = ({ forecast }: { forecast: DetailedWeather[] }) => {
@@ -35,7 +31,6 @@ export const TimeTravelLayout = ({ forecast }: { forecast: DetailedWeather[] }) 
     <div className="relative w-full min-h-screen font-sans text-white">
       
       <div className={`fixed inset-0 transition-colors duration-1000 bg-gradient-to-b ${getGradient()}`}>
-        {/* The Canvas is now lazy-loaded */}
         <WeatherCanvas 
             condition={w.condition} 
             windSpeed={w.windSpeed} 

@@ -31,14 +31,11 @@ export const SearchBox = () => {
     setIsFocused(false);
 
     try {
-      // 1. Convert "Delhi, India" -> Coordinates
       const results = await getGeocode({ address });
       const { lat, lng } = await getLatLng(results[0]);
       
-      // 2. Extract a pretty name (e.g., "Delhi")
       const name = address.split(',')[0];
 
-      // 3. Push BOTH to URL: city=coords (for API) & name=text (for UI)
       router.push(`/?city=${lat},${lng}&name=${encodeURIComponent(name)}`);
       setValue("", false);
     } catch (error) {
@@ -60,7 +57,6 @@ export const SearchBox = () => {
           let cityName = "Current Location";
           
           if (results[0]) {
-             // Try to find the city name
              const cityComponent = results[0].address_components.find((c: any) => c.types.includes('locality'));
              cityName = cityComponent ? cityComponent.long_name : results[0].formatted_address.split(',')[0];
           }

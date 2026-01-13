@@ -4,7 +4,7 @@ import { DetailedWeather, CODE_MAP } from './weather-utils';
 
 const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
-export async function getWeatherForecast(location = 'new york', displayName?: string): Promise<DetailedWeather[] | null> {
+export async function getWeatherForecast(location = 'new delhi', displayName?: string): Promise<DetailedWeather[] | null> {
   const apiKey = process.env.TOMORROW_API_KEY;
   if (!apiKey) return null;
 
@@ -38,16 +38,11 @@ export async function getWeatherForecast(location = 'new york', displayName?: st
     const todayValues = dailyData[0]?.values || {}; 
     const { sunriseTime, sunsetTime } = todayValues;
 
-    // --- FIX: Simplified & Type-Safe Name Logic ---
-    // 1. Priority: Display Name -> API Name -> Location String
-    // Since 'location' is a default parameter (string), this chain is guaranteed to return a string.
     let finalName: string = displayName || data.location?.name || decodeURIComponent(location);
 
-    // 2. Clean up if it looks like coordinates "12.34,56.78"
     if (/^-?\d+(\.\d+)?,\s*-?\d+(\.\d+)?$/.test(finalName)) {
         finalName = "Current Location";
     }
-    // ----------------------------------------------
 
     return hourlyData.slice(0, 8).map((item: any) => {
       const v = item.values;

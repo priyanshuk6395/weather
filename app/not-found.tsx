@@ -1,6 +1,4 @@
 import { ArrowLeft } from 'lucide-react';
-// FIX: Remove 'next/link' to prevent context errors in static build
-// import Link from 'next/link'; 
 
 export default function NotFound() {
   return (
@@ -15,7 +13,6 @@ export default function NotFound() {
         <p className="text-white/60">
           The weather coordinates you are looking for do not exist.
         </p>
-        {/* Use standard <a> tag instead of Link for absolute safety */}
         <a 
           href="/"
           className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 transition-all border border-white/5 text-sm font-medium"

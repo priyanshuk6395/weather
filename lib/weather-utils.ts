@@ -1,6 +1,3 @@
-// lib/weather-utils.ts
-
-// 1. Move Interfaces here
 export interface WeatherSnapshot {
   timeLabel: string;
   rawTime: string;
@@ -22,7 +19,6 @@ export interface DetailedWeather extends WeatherSnapshot {
   cloudCover: number;
 }
 
-// 2. Move Logic Helpers here
 export function getLifestyleTips(w: DetailedWeather) {
   return [
     {
@@ -46,7 +42,6 @@ export function getLifestyleTips(w: DetailedWeather) {
   ];
 }
 
-// 3. Move Code Map here
 export const CODE_MAP: Record<number, string> = {
   1000: 'CLEAR', 1100: 'CLEAR',
   1101: 'CLOUDY', 1102: 'CLOUDY', 1001: 'CLOUDY',

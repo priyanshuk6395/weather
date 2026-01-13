@@ -7,7 +7,6 @@ export const DetailGrid = ({ weather }: { weather: DetailedWeather }) => {
   return (
     <div className="w-full max-w-2xl mx-auto space-y-8 p-4">
       
-      {/* 1. The Bento Grid (Metrics) */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <GridItem icon={<Wind size={20}/>} label="Wind" value={`${weather.windSpeed} km/h`} sub={`${weather.windDirection}°`} />
         <GridItem icon={<Droplets size={20}/>} label="Humidity" value={`${weather.humidity}%`} sub="Dew Point 12°" />
@@ -15,7 +14,6 @@ export const DetailGrid = ({ weather }: { weather: DetailedWeather }) => {
         <GridItem icon={<Eye size={20}/>} label="Visibility" value={`${weather.visibility} km`} sub={weather.visibility > 9 ? 'Good' : 'Poor'} />
       </div>
 
-      {/* 2. Lifestyle Section */}
       <div className="bg-white/10 rounded-3xl p-6 backdrop-blur-md border border-white/5">
         <h3 className="text-white/60 text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
           <Zap size={14} className="text-yellow-400" /> Lifestyle Insights

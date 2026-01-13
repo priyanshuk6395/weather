@@ -1,4 +1,3 @@
-// app/layout.tsx - CORRECT VERSION
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Metadata, Viewport } from 'next';

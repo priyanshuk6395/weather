@@ -13,16 +13,12 @@ export const WeatherCanvas: React.FC<WeatherCanvasProps> = ({ condition, windSpe
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // State to track if we should animate
   const [isVisible, setIsVisible] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
-  // 1. PERFORMANCE: Detect Mobile & Off-screen status
   useEffect(() => {
-    // Detect Mobile (simplistic check for < 768px)
     setIsMobile(window.innerWidth < 768);
 
-    // Observer: Only animate when user is looking at the hero section
     const observer = new IntersectionObserver(
       ([entry]) => setIsVisible(entry.isIntersecting),
       { threshold: 0 }
@@ -37,31 +33,27 @@ export const WeatherCanvas: React.FC<WeatherCanvasProps> = ({ condition, windSpe
     const canvas = canvasRef.current;
     if (!canvas) return;
     
-    // Hint browser to optimize for speed
     const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
     if (!ctx) return;
 
     let animationId: number;
     
-    // --- Frame Throttling Logic ---
     let lastTime = 0;
-    const fpsLimit = isMobile ? 30 : 60; // 30fps on mobile saves massive battery
+    const fpsLimit = isMobile ? 30 : 60;
     const fpsInterval = 1000 / fpsLimit;
 
-    // --- Math Setup ---
     const windRad = (windDirection - 90) * (Math.PI / 180);
     const forceMultiplier = Math.min(windSpeed, 40) / 10; 
     const windX = Math.cos(windRad) * forceMultiplier;
     const windY = 0.5 + Math.abs(Math.sin(windRad) * forceMultiplier * 0.2);
 
-    // --- Particle System ---
     class Particle {
       x: number; y: number; z: number; length: number; speed: number;
       
       constructor(w: number, h: number) {
         this.x = Math.random() * w;
         this.y = Math.random() * h;
-        this.z = Math.random() * 0.5 + 0.5; // Depth (0.5 to 1.0)
+        this.z = Math.random() * 0.5 + 0.5;
         this.speed = (Math.random() * 5 + 5) * this.z; 
         this.length = (Math.random() * 10 + 5) * this.z;
       }
@@ -70,7 +62,6 @@ export const WeatherCanvas: React.FC<WeatherCanvasProps> = ({ condition, windSpe
         this.x += windX * this.speed;
         this.y += windY * this.speed;
         
-        // Wrap logic
         if (this.y > h) { this.y = -20; this.x = Math.random() * w; }
         if (this.x > w) this.x = 0;
         if (this.x < 0) this.x = w;
@@ -86,10 +77,8 @@ export const WeatherCanvas: React.FC<WeatherCanvasProps> = ({ condition, windSpe
       }
     }
 
-    // --- Init ---
     const particles: Particle[] = [];
     
-    // Massive optimization: 400 particles on Desktop, only 50 on Mobile
     const baseCount = condition === 'RAIN' || condition === 'STORM' ? 400 : 50;
     const count = isMobile ? Math.min(baseCount, 50) : baseCount;
 
@@ -109,19 +98,15 @@ export const WeatherCanvas: React.FC<WeatherCanvasProps> = ({ condition, windSpe
     window.addEventListener('resize', resize);
     resize();
 
-    // --- Render Loop (With Throttling) ---
     const render = (currentTime: number) => {
       animationId = requestAnimationFrame(render);
       
-      // 1. Pause if scrolled away
       if (!isVisible) return;
 
-      // 2. Throttle FPS
       const elapsed = currentTime - lastTime;
       if (elapsed < fpsInterval) return;
       lastTime = currentTime - (elapsed % fpsInterval);
 
-      // 3. Draw
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       if (condition !== 'CLEAR' && condition !== 'CLOUDY') {
