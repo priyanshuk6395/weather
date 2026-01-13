@@ -57,7 +57,7 @@ You will need API keys for:
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/priyanshuk6395/weather.git](https://github.com/priyanshuk6395/weather.git)
+    git clone https://github.com/priyanshuk6395/weather.git
     cd weather
     ```
 
